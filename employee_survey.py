@@ -11,8 +11,6 @@ creds = ServiceAccountCredentials.from_json_keyfile_dict(json_data, scope)
 client = gspread.authorize(creds)
 sheet = client.open("Employee Survey Responses").sheet1
 
-
-
 # -------------------------------
 # Helper functions for validation
 # -------------------------------
@@ -31,7 +29,6 @@ st.title("Employed Nomination Form")
 
 adge_name = st.text_input("Name of ADGE")
 num_employees = st.number_input("Number of nominated employees:", min_value=1, step=1)
-
 
 employee_data = []
 submission_error = False
@@ -73,8 +70,21 @@ if st.button("Submit"):
             submission_error = True
 
     if not submission_error:
-        for emp in employee_data:
-            row = [adge_name, emp["Name"], emp["Designation"], emp["Email"], emp["Phone"]]  
-            sheet.append_row(row)
+        existing_rows = sheet.get_all_values()
+        duplicates = []
+        submitted = []
 
-        st.success("Response submitted successfully. ")
+        for idx, emp in enumerate(employee_data):
+            row = [adge_name, emp["Name"], emp["Designation"], emp["Email"], emp["Phone"]]
+
+            if row in existing_rows:
+                duplicates.append(idx + 1)  # Store employee number
+            else:
+                sheet.append_row(row)
+                submitted.append(idx + 1)
+
+        if submitted:
+            st.success(f"Successfully submitted entries for: Employee(s) {', '.join(map(str, submitted))}")
+
+        if duplicates:
+            st.warning(f"Duplicate entries found. Skipped Employee(s): {', '.join(map(str, duplicates))}")
