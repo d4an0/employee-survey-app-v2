@@ -77,4 +77,4 @@ if st.button("Submit"):
             row = [adge_name, emp["Name"], emp["Designation"], emp["Email"], emp["Phone"]]  
             sheet.append_row(row)
 
-        st.success("Survey submitted successfully. Responses")
+        st.success("Response submitted successfully. ")
