@@ -30,7 +30,8 @@ def is_valid_phone(phone):
 st.title("Employed Nomination Form")
 
 adge_name = st.text_input("Name of ADGE")
-num_employees = st.number_input("Number of employees attending the event:", min_value=1, step=1)
+num_employees = st.number_input("Number of employees nominees:", min_value=1, step=1)
+
 
 employee_data = []
 submission_error = False
