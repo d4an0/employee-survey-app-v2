@@ -19,8 +19,7 @@ def is_valid_email(email):
     return re.match(pattern, email)
 
 def is_valid_phone(phone):
-    pattern = r'^\+971\d{9}$'
-    return re.match(pattern, phone) is not None
+    return phone.startswith("+971") and len(phone) == 13 and phone[4:].isdigit()
 
 # -------------------------------
 # Streamlit Form UI
@@ -38,7 +37,7 @@ for i in range(num_employees):
     name = st.text_input("Full Name", key=f"name_{i}")
     designation = st.text_input("Designation", key=f"designation_{i}") 
     email = st.text_input("Email Address", key=f"email_{i}")
-    phone = st.text_input("Phone Number", key=f"phone_{i}")
+   phone = st.text_input("Phone Number", value="+971", key=f"phone_{i}")
 
     employee_data.append({
         "Name": name,
@@ -66,7 +65,8 @@ if st.button("Submit"):
             st.error(f"Invalid Email Address for Employee {idx + 1}.")
             submission_error = True
         if not is_valid_phone(emp["Phone"]):
-            st.error(f"Phone Number for Employee {idx + 1} must start with +971.")
+            st.error(f"Invalid phone number for Employee {idx + 1}. It must start with +971 and include exactly 9 digits after.")
+    
             submission_error = True
 
     if not submission_error:
