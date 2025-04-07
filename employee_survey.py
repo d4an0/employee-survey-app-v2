@@ -37,7 +37,8 @@ for i in range(num_employees):
     name = st.text_input("Full Name", key=f"name_{i}")
     designation = st.text_input("Designation", key=f"designation_{i}") 
     email = st.text_input("Email Address", key=f"email_{i}")
-   phone = st.text_input("Phone Number", value="+971", key=f"phone_{i}")
+    phone = st.text_input("Phone Number", value="+971", key=f"phone_{i}")
+
 
     employee_data.append({
         "Name": name,
